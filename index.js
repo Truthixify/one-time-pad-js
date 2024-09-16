@@ -1,5 +1,7 @@
 let mode = 'encrypt'
 let pad
+let query = ''
+const homeUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}`
 
 const textInput = document.querySelector('.text-input')
 const outputBox = document.querySelector('.output-box')
@@ -21,6 +23,11 @@ const shareBtnText = document.querySelector('.share-btn-text')
 const modeEncrypt = document.getElementById('mode-encrypt')
 const modeDecrypt = document.getElementById('mode-decrypt')
 
+window.addEventListener('DOMContentLoaded', () => {
+  handleQuery()
+  window.history.replaceState({}, document.title, homeUrl)
+})
+
 modeEncrypt.addEventListener('click', () => changeMode('encrypt'))
 modeDecrypt.addEventListener('click', () => changeMode('decrypt'))
 
@@ -33,6 +40,18 @@ btn.addEventListener('click', (e) => {
 copyBtn.addEventListener('click', () => handleCopy())
 shareBtn.addEventListener('click', () => handleShare())
 
+function handleQuery() {
+  const urlParams = new URLSearchParams(window.location.search)
+  if(urlParams.get('q') !== '') {
+    const q = urlParams.get('q')
+    query = decrypt(q, '1'.repeat(q.length))
+    changeMode('decrypt')
+    let queryArray = query.split('0xffffff')
+    textInput.value = queryArray[0]
+    pad = queryArray[1]
+  }
+}
+
 function handleCopy() {
   navigator.clipboard.writeText(outputResult.textContent)
   copyBtn.firstChild.firstChild.src = './images/tick.png'
@@ -40,7 +59,10 @@ function handleCopy() {
 }
 
 function handleShare() {
-  navigator.clipboard.writeText(outputResult.textContent + '0xffffff' + pad)
+  const secret = outputResult.textContent + '0xffffff' + pad
+  const encSecret = encrypt(secret, '1'.repeat(secret.length))
+  const url = homeUrl + '?q=' + encSecret
+  navigator.clipboard.writeText(url)
   shareBtn.firstChild.firstChild.src = './images/tick-white.png'
   shareBtnText.textContent = 'SHARED'
 }
@@ -70,17 +92,9 @@ function handleInput(mode) {
   
       progress(ct)
     } else if(mode === 'decrypt') {
-      if(textInput.value.includes('0xffffff')) {
-        let inputArray = textInput.value.split('0xffffff')
-
-        let pt = decrypt(inputArray[1], inputArray[0])
-      
-        progress(pt)
-      } else {
-        let pt = decrypt(pad, textInput.value)
-      
-        progress(pt)
-      }
+      let pt = decrypt(pad, textInput.value)
+    
+      progress(pt)
     }
 
     error.classList.add('hidden')

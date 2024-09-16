@@ -25,7 +25,7 @@ const modeDecrypt = document.getElementById('mode-decrypt')
 
 window.addEventListener('DOMContentLoaded', () => {
   handleQuery()
-  window.history.replaceState({}, document.title, homeUrl)
+  window.history.replaceState({}, document.title, homeUrl + '/one-time-pad-j')
 })
 
 modeEncrypt.addEventListener('click', () => changeMode('encrypt'))

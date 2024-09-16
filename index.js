@@ -4,7 +4,9 @@ let pad
 const textInput = document.querySelector('.text-input')
 const outputBox = document.querySelector('.output-box')
 const outputHeader = document.querySelector('.output-header')
-const outputHeaderLine = document.querySelector('.output-box hr')
+const outputFooter = document.querySelector('.output-footer')
+const outputHeaderLine = document.querySelectorAll('.output-box hr')[0]
+const outputFooterLine = document.querySelectorAll('.output-box hr')[1]
 const outputProgress = document.querySelector('.output-progress')
 const outputProgressText = document.querySelector('.output-progress h3')
 const progressBar = document.querySelector('progress')
@@ -13,6 +15,8 @@ const error = document.querySelector('.error')
 const btn = document.getElementById('btn')
 const copyBtn = document.getElementById('copy-btn')
 const copyBtnText = document.querySelector('.copy-btn-text')
+const shareBtn = document.getElementById('share-btn')
+const shareBtnText = document.querySelector('.share-btn-text')
 
 const modeEncrypt = document.getElementById('mode-encrypt')
 const modeDecrypt = document.getElementById('mode-decrypt')
@@ -27,11 +31,18 @@ btn.addEventListener('click', (e) => {
 })
 
 copyBtn.addEventListener('click', () => handleCopy())
+shareBtn.addEventListener('click', () => handleShare())
 
 function handleCopy() {
   navigator.clipboard.writeText(outputResult.textContent)
   copyBtn.firstChild.firstChild.src = './images/tick.png'
   copyBtnText.textContent = 'COPIED'
+}
+
+function handleShare() {
+  navigator.clipboard.writeText(outputResult.textContent + '0xffffff' + pad)
+  shareBtn.firstChild.firstChild.src = './images/tick-white.png'
+  shareBtnText.textContent = 'SHARED'
 }
 
 function handleInput(mode) {
@@ -41,10 +52,14 @@ function handleInput(mode) {
     progressBar.classList.remove('hidden')
     outputProgressText.classList.remove('hidden')
     outputHeader.classList.add('hidden')
+    outputFooter.classList.add('hidden')
     outputResult.classList.add('hidden')
     outputHeaderLine.classList.add('hidden')
+    outputFooterLine.classList.add('hidden')
     copyBtnText.textContent = 'COPY'
+    shareBtnText.textContent = 'SHARE'
     copyBtn.firstChild.firstChild.src = './images/copy.png'
+    shareBtn.firstChild.firstChild.src = './images/share.png'
 
     progressBar.value = 1
   
@@ -55,9 +70,17 @@ function handleInput(mode) {
   
       progress(ct)
     } else if(mode === 'decrypt') {
-      let pt = decrypt(pad, textInput.value)
+      if(textInput.value.includes('0xffffff')) {
+        let inputArray = textInput.value.split('0xffffff')
+
+        let pt = decrypt(inputArray[1], inputArray[0])
       
-      progress(pt)
+        progress(pt)
+      } else {
+        let pt = decrypt(pad, textInput.value)
+      
+        progress(pt)
+      }
     }
 
     error.classList.add('hidden')
@@ -75,10 +98,12 @@ function progress(output) {
     outputResult.textContent = output
     clearInterval(timer)
     outputHeader.classList.remove('hidden')
+    outputFooter.classList.remove('hidden')
     progressBar.classList.add('hidden')
     outputProgressText.classList.add('hidden')
     outputResult.classList.remove('hidden')
     outputHeaderLine.classList.remove('hidden')
+    outputFooterLine.classList.remove('hidden')
   }, 6000)
 }
 

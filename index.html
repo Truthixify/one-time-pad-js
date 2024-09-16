@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>One Time Pad(OTP)</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel='stylesheet' type='text/css' media='screen' href='bulma.css'>
+  <link rel='stylesheet' type='text/css' media='screen' href='index.css'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <script src='index.js' defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="has-text-centered is-size-1 my-5">One Time Pad (OTP) Playground</h1>
+    <div class="tabs  is-centered is-boxed is-medium">
+      <ul id="mode">
+        <li class="is-active" id="mode-encrypt">
+          <a>
+            <span class="icon is-big"
+              ><img src="./images/shield.png" alt=""></span>
+            <span>ENCRYPT</span>
+          </a>
+        </li>
+        <li id="mode-decrypt">
+          <a>
+            <span class="icon is-big"
+              ><img src="./images/decryption.png" alt=""></span>
+            <span>DECRYPT</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <form class="box">
+      <div class="field">
+        <div class="control">
+          <textarea class="textarea is-large text-input" placeholder="Enter your plaintext here" required></textarea>
+        </div>
+      </div>
+      <button class="button is-link" id="btn">ENCRYPT</button>
+      <p class="error hidden has-text-danger"><span>plaintext</span> cannot be empty</p>
+    </form>
+    <div class="box output-box hidden">
+      <div class="columns is-vcentered output-header hidden is-mobile">
+        <h3 class="column is-8-mobile is-11-desktop">RESULT</h3>
+        <button class="button is-light is-small column is-4-mobile is-1-desktop is-2-tablet" id="copy-btn"><span class="icon is-big mx-2"><img src="./images/copy.png"></span><span class="copy-btn-text">COPY</span></button>
+      </div>
+      <hr class="hidden">
+      <div class="output-progress hidden">
+        <h3 class="has-tezt-size-3">Encrpting your plaintext...<h3>
+        <progress class="progress" value="1" max="100"></progress>
+      </div>
+      <p class="output-result my-6 has-text-centered"></p>
+    </div>
+  </div>
+</body>
+</html>

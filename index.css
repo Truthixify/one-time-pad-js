@@ -1,0 +1,11 @@
+body {
+  font-family: "Josefin Sans", system-ui !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#copy-btn {
+  display: flex;
+}

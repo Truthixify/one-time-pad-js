@@ -61,7 +61,7 @@ function handleCopy() {
 function handleShare() {
   const secret = outputResult.textContent + '0xffffff' + pad
   const encSecret = encrypt(secret, '1'.repeat(secret.length))
-  const url = homeUrl + 'one-time-pad-js' + '?q=' + encSecret
+  const url = homeUrl + '/one-time-pad-js' + '?q=' + encSecret
   navigator.clipboard.writeText(url)
   shareBtn.firstChild.firstChild.src = './images/tick-white.png'
   shareBtnText.textContent = 'SHARED'
